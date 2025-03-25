@@ -1,0 +1,49 @@
+Los archivos a utilizar se encuentran en la carpeta archivos YAML Kubernetes.
+La configuración se realizará en el clúster de kubernete Master.
+
+Paso 1: Acceder al clúster y ejecutar el archivo name.yaml
+
+sudo nano name.yaml
+Kubectl apply -f name.yaml
+
+Paso 2: Ejecutar el archivo configmap.yaml
+
+sudo nano configmap.yaml
+Kubectl apply -f configmap.yaml
+
+Paso3: Ejecutar el archivo deploymentR.yaml y verificar
+
+sudo nano deploymentR.yaml
+Kubectl apply -f deploymentR.yaml
+Kubectl get deployments --namespace pfinal
+
+Paso 4: Ejecutar el archivo serviceR.yaml
+
+sudo nano serviceR.yaml
+Kubectl apply -f serviceR.yaml
+
+4.1 Consumir la aplicación
+
+Grabar un registro
+curl -X POST -d '{"nombre":"prueba4", "descripcion":"probando", "precio":500.0}' -H "Content-Type: application/json"  http://10.103.242.184:8095/api/productos
+
+Leer los registros
+http://10.103.242.184:8095/api/productos
+
+
+Paso 5: Instalar el Nginx Ingress Controller y ejecutar el archivo rest1-ingress.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+sudo nano rest1-ingress.yaml
+kubectl apply -f rest1-ingress.yaml
+
+kubectl get pods -n ingress-nginx
+kubectl get svc -n ingress-nginx
+
+
+Paso 6: Consumir la aplicación
+
+curl -X POST -d '{"nombre":"prueba4", "descripcion":"probando", "precio":500.0}' -H "Content-Type: application/json"  http://10.110.116.254:8095/api/productos
+
+curl -H "Host: rest1.com" http://10.110.116.254:8095
